@@ -8,7 +8,7 @@
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
+                # git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
             }
         }
         stage('Compile') {
