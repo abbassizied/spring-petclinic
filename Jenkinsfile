@@ -9,13 +9,9 @@
                 echo 'Git Checkout Completed'
             }
         }
-        stage('Build') {
+        stage('Build') { 
             steps {
-                container ('maven'){
-                  sh 'mvn version'
-                }
-            }   
-            steps {
+               sh 'mvn version'
                sh "mvn clean package "
             }
         }
