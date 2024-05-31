@@ -1,19 +1,7 @@
  pipeline {
     agent any
-  
-  }
-  environment {
-    // DOCKER_CERT_PATH = credentials('dockerhub_cred')
-  }
-  
-    stages {
-     
-    stage('foo') {
-      steps {
-        sh "docker version" // DOCKER_CERT_PATH is automatically picked up by the Docker client
-      }
-    }
-     
+ 
+    stages { 
         stage('SCM') {
             steps {
                 // git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
