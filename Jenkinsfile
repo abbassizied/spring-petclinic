@@ -11,6 +11,11 @@
         }
         stage('Build') {
             steps {
+                container ('maven'){
+                  sh 'mvn version'
+                }
+            }   
+            steps {
                sh "mvn clean package "
             }
         }
