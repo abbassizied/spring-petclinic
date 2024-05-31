@@ -3,7 +3,7 @@
   
   }
   environment {
-    DOCKER_CERT_PATH = credentials('dockerhub_cred')
+    // DOCKER_CERT_PATH = credentials('dockerhub_cred')
   }
   
     stages {
