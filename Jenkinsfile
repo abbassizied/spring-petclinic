@@ -11,14 +11,10 @@
         }
         stage('Sonarqube Analysis') {
             steps {
-                withSonarQubeEnv('ServerNameSonar') {
-                    sh '''mvn clean verify sonar:sonar \
-                          -Dsonar.login=admin \
-                          -Dsonar.password=pass \
+                withSonarQubeEnv('MySonarQube') {
+                    sh '''mvn clean verify sonar:sonar \ 
                           -Dsonar.projectKey=spring-petclinic \
-                          -Dsonar.projectName='spring-petclinic' \
-                          -Dsonar.host.url=http://localhost:9000 \
-                          -Dsonar.token=sqp_27d348d522e1a5e98c64e1be6c9f7288e45f915b 
+                          -Dsonar.projectName='spring-petclinic'
                        '''
                     echo 'SonarQube Analysis Completed'
                 }
