@@ -12,6 +12,7 @@
         stage('Sonarqube Analysis') {
             steps {
                 withSonarQubeEnv('MySonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
                     sh "sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName='spring-petclinic'"
                     echo 'SonarQube Analysis Completed'
                 }
