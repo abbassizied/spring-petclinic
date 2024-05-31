@@ -7,7 +7,7 @@
     stages {
         stage('SCM') {
             steps {
-                # git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
+                // git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/abbassizied/spring-petclinic']])
                 echo 'Git Checkout Completed'
             }
