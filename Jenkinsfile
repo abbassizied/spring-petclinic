@@ -13,6 +13,8 @@
             steps {
                 withSonarQubeEnv('ServerNameSonar') {
                     sh '''mvn clean verify sonar:sonar \
+                          -Dsonar.login=admin \
+                          -Dsonar.password=pass \
                           -Dsonar.projectKey=spring-petclinic \
                           -Dsonar.projectName='spring-petclinic' \
                           -Dsonar.host.url=http://localhost:9000 \
