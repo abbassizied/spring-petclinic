@@ -9,11 +9,16 @@
                 echo 'Git Checkout Completed'
             }
         }
-        stage('Check Maven') { 
-            steps {
-               sh 'mvn version'
-            }
+    stage('Maven Install') {
+      agent {
+        docker {
+          image 'maven:3.5.0'
         }
+      }
+      steps {
+        sh 'mvn clean install'
+      }
+    }
         stage('Sonarqube Analysis') {
             steps {
                 withSonarQubeEnv('MySonarQube') {
