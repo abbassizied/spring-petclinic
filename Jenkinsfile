@@ -9,17 +9,15 @@
                 echo 'Git Checkout Completed'
             }
         }
-        stage('Build') { 
+        stage('Check Maven') { 
             steps {
                sh 'mvn version'
-               sh "mvn clean package "
             }
         }
         stage('Sonarqube Analysis') {
             steps {
                 withSonarQubeEnv('MySonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                    sh 'mvn clean package sonar:sonar'
+                    sh 'mvn sonar:sonar'
                     echo 'SonarQube Analysis Completed'
                 }
             }
