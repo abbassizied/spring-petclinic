@@ -1,11 +1,21 @@
  pipeline {
     agent any
+
     tools {
-        maven 'Maven 3.8.6'
-        jdk 'Java 17.0.4.1'
-    }
+    'org.jenkinsci.plugins.docker.commons.tools.DockerTool' '18.09'
+  }
+  environment {
+    DOCKER_CERT_PATH = credentials('dockerhub_cred')
+  }
   
     stages {
+     
+    stage('foo') {
+      steps {
+        sh "docker version" // DOCKER_CERT_PATH is automatically picked up by the Docker client
+      }
+    }
+     
         stage('SCM') {
             steps {
                 // git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
