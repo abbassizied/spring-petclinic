@@ -9,16 +9,7 @@
                 echo 'Git Checkout Completed'
             }
         }
-        stage('Sonarqube Analysis') {
-            steps {
-                withSonarQubeEnv('MySonarQube') {
-                    sh 'mvn sonar:sonar'
-                    echo 'SonarQube Analysis Completed'
-                }
-            }
-         
 
-        }
         stage('OWASP Dependency Check') {
             steps {
                 dependencyCheck additionalArguments: '--scan target/', odcInstallation: 'owasp'
@@ -36,6 +27,16 @@
                 ])
             }
         }
+     
+        stage('Sonarqube Analysis') {
+            steps {
+                withSonarQubeEnv('MySonarQube') {
+                    sh 'mvn sonar:sonar'
+                    echo 'SonarQube Analysis Completed'
+                }
+            } 
+        }
+
         stage('What\'s next?') {
             steps {
                 echo 'What\'s next?' 
