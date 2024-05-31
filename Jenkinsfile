@@ -13,7 +13,7 @@
         stage('Sonarqube Analysis') {
             steps {
                 withSonarQubeEnv('MySonarQube') {
-                    sh 'mvn sonar:sonar'
+                   sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName='spring-petclinic'"
                     echo 'SonarQube Analysis Completed'
                 }
             } 
