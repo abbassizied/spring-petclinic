@@ -6,31 +6,21 @@
     }
     	
     stages {
-        stage('Checkout') {
+        stage('SCM') {
             steps {
-                # git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
+                git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
             }
         }
-        stage('Compile') {
-            steps {
-               sh "mvn clean compile"
-            }
-        }
-        
-        stage('Test cases') {
-            steps {
-               sh "mvn test"
-            }
-        }	
         stage('Sonarqube Analysis') {
-            steps {
-               sh ''' mvn clean verify sonar:sonar \
-                      -Dsonar.projectKey=spring-petclinic \
-                      -Dsonar.projectName='spring-petclinic' \
-                      -Dsonar.host.url=http://localhost:9000 \
-                      -Dsonar.token=sqp_27d348d522e1a5e98c64e1be6c9f7288e45f915b 
-                '''
-            }
+                   def mvn = tool 'Default Maven';
+                   withSonarQubeEnv() {
+                     sh '''${mvn}/bin/mvn clean verify sonar:sonar \
+                           -Dsonar.projectKey=spring-petclinic \
+                           -Dsonar.projectName='spring-petclinic' \
+                           -Dsonar.host.url=http://localhost:9000 \
+                           -Dsonar.token=sqp_27d348d522e1a5e98c64e1be6c9f7288e45f915b 
+                     '''
+                   }
         }
         stage('Build') {
             steps {
