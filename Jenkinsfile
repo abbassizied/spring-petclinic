@@ -1,26 +1,31 @@
  pipeline {
-    agent any 
-  
-    environment {
-        SCANNER_HOME = tool 'sonar-scanner'
+    agent any
+    tools {
+        maven 'Maven'
     }
     	
     stages {
         stage('SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
+                # git branch: 'main', url: 'https://github.com/abbassizied/spring-petclinic.git'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/abbassizied/spring-petclinic']])
+                echo 'Git Checkout Completed'
             }
         }
         stage('Sonarqube Analysis') {
-                   def mvn = tool 'Default Maven';
-                   withSonarQubeEnv() {
-                     sh '''${mvn}/bin/mvn clean verify sonar:sonar \
-                           -Dsonar.projectKey=spring-petclinic \
-                           -Dsonar.projectName='spring-petclinic' \
-                           -Dsonar.host.url=http://localhost:9000 \
-                           -Dsonar.token=sqp_27d348d522e1a5e98c64e1be6c9f7288e45f915b 
-                     '''
-                   }
+            steps {
+                withSonarQubeEnv('ServerNameSonar') {
+                    sh '''mvn clean verify sonar:sonar \
+                          -Dsonar.projectKey=spring-petclinic \
+                          -Dsonar.projectName='spring-petclinic' \
+                          -Dsonar.host.url=http://localhost:9000 \
+                          -Dsonar.token=sqp_27d348d522e1a5e98c64e1be6c9f7288e45f915b 
+                       '''
+                    echo 'SonarQube Analysis Completed'
+                }
+            }
+         
+
         }
         stage('Build') {
             steps {
