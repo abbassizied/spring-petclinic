@@ -1,6 +1,8 @@
  pipeline {
     agent any
- 
+    tools {
+        maven 'maven397'
+    } 
     stages { 
         stage('SCM') {
             steps {
@@ -13,7 +15,7 @@
         stage('Sonarqube Analysis') {
             steps {
                 withSonarQubeEnv('MySonarQube') {
-                   sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName='spring-petclinic'"
+                   sh "mvn clean verify sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName='spring-petclinic'"
                     echo 'SonarQube Analysis Completed'
                 }
             } 
