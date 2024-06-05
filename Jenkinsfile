@@ -16,13 +16,13 @@
        }
      }
 
-     stage('Build du Projet') {
+     stage('Build') {
        steps {
          sh 'mvn clean install'
        }
      }
 
-     stage('Analyse Sonarqube') {
+     stage('Sonarqube Analysis') {
        steps {
          withSonarQubeEnv(installationName: 'sq1') {
            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar'
@@ -30,16 +30,24 @@
        }
      }
 
-     stage('OWASP Dependency-Check Vulnerabilities') {
-       steps {
-         dependencyCheck additionalArguments: '''
-                     -o './'
-                     -s './'
-                     -f 'ALL'
-                     --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
-         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-       }
-     }
+        stage('OWASP Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan target/', odcInstallation: 'owasp'
+            }
+        }
+        
+        stage('Publish OWASP Dependency Check Report') {
+            steps {
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target',
+                    reportFiles: 'dependency-check-report.html',
+                    reportName: 'OWASP Dependency Check Report'
+                ])
+            }
+        }
 
      stage('What\'s next?') {
        steps {
