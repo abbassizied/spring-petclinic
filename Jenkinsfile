@@ -12,13 +12,18 @@
             }
         }
 
-        stage('Sonarqube Analysis') {
+        stage('Build du Projet') {
             steps {
-                withSonarQubeEnv('MySonarQube') {
-                   sh "mvn clean verify sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName='spring-petclinic'"
-                    echo 'SonarQube Analysis Completed'
-                }
-            } 
+                sh 'mvn clean install -DskipTests'  
+            }
+        }
+	    
+        stage('Analyse Sonarqube') {
+            steps {
+	            withSonarQubeEnv(installationName: 'sq1') { 
+		            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar'
+	            }
+            }
         }
      
         stage('OWASP Dependency Check') {
